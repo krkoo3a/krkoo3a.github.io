@@ -1,5 +1,473 @@
 <!DOCTYPE html>
 
+<html lang="en" style="scroll-behavior: smooth;"><head>
+	<script type="text/javascript">
+				(function(d) {
+			var ciCollectedCookies = [];
+			var cookieDesc =
+				Object.getOwnPropertyDescriptor(Document.prototype, 'cookie') ||
+				Object.getOwnPropertyDescriptor(HTMLDocument.prototype, 'cookie');
+
+			var storage = null;
+			function checkStorage() {
+				if (storage === null) {
+					var whitelist = ['__cookie_law__', 'PHPSESSID'];
+					var cookies = JSON.parse(localStorage.getItem('allowedCookies') || '[]');
+					cookies = cookies.map(cookie => {
+						if (cookie.indexOf('*') >= 0) {
+							return new RegExp(cookie.replace('*', '.+'));
+						}
+						return cookie;
+					});
+					storage = [].concat.apply(whitelist, cookies);
+				}
+				return storage;
+			}
+			d.cookieIsAllowed = function (c) {
+				var all = checkStorage();
+				for (const idx in all) {
+					if (all[idx] instanceof RegExp && all[idx].test(c)) return true;
+					if (all[idx] === c) return true;
+				}
+			}
+
+			if (cookieDesc && cookieDesc.configurable) {
+				Object.defineProperty(d, 'cookie', {
+					get: function() {
+						return cookieDesc.get.call(d);
+					},
+					set: function(val) {
+						if (val.indexOf('__cookie_law__') >= 0) {
+							cookieDesc.set.call(d, val);
+							return;
+						}
+
+						var cookie_law = document.cookie.match(/(?:^|;\ *)__cookie_law__=(0|1)/);
+						if (cookie_law !== null) {
+							cookie_law = cookie_law[1];
+						}
+
+						// Only if cookie accept enabled
+						if (cookie_law == 1) {
+							var c = val.split('=')[0];
+							// cookie marked for removal
+							if (val[0] === '!') {
+								cookieDesc.set.call(d, val.slice(1));
+							} else if (!localStorage.getItem('allowedCookies') || d.cookieIsAllowed(c) >= 0) {
+								cookieDesc.set.call(d, val);
+							}
+						}
+						else if (cookie_law === null && ciCollectedCookies.indexOf(val) < 0) {
+							ciCollectedCookies.push(val);
+						}
+					}
+				});
+			}
+			d.cookieChangedCategories = function (cookieLaw, allowedCookies = null) {
+				if (window.gtag) {
+					var opts = {
+						'ad_storage': !!cookieLaw && (!Array.isArray(allowedCookies) || allowedCookies.indexOf('gtag:ad_storage') >= 0) ? 'granted' : 'denied',
+						'ad_user_data': !!cookieLaw && (!Array.isArray(allowedCookies) || allowedCookies.indexOf('gtag:ad_user_data') >= 0) ? 'granted' : 'denied',
+						'ad_personalization': !!cookieLaw && (!Array.isArray(allowedCookies) || allowedCookies.indexOf('gtag:ad_personalization') >= 0) ? 'granted' : 'denied',
+						'analytics_storage': !!cookieLaw && (!Array.isArray(allowedCookies) || allowedCookies.indexOf('gtag:analytics_storage') >= 0) ? 'granted' : 'denied',
+					};
+					gtag('consent', 'update', opts);
+					if (!!cookieLaw && Array.isArray(allowedCookies) && Object.values(opts).indexOf('granted') >= 0) {
+						allowedCookies = allowedCookies.concat(['DSID','test_cookie','ar_debug','IDE','FPLC','_ga','_gac_*','_gid','_gat*','__utma','__utmb','__utmc','__utmt','__utmz','__utmv','AMP_TOKEN','FPID','GA_OPT_OUT','_ga_*','_dc_gtm_*','_gaexp','_gaexp_rc','_opt_awcid','_opt_awmid','_opt_awgid','_opt_awkid','_opt_utmc']);
+					}
+				}
+				if (Array.isArray(allowedCookies)) {
+					localStorage.setItem('allowedCookies', JSON.stringify(allowedCookies));
+				}
+
+				document.cookie = '__cookie_law__=' + cookieLaw + '; path=/; expires=Wed, 25 Mar 2026 13:32:00 GMT';
+
+				var items = ciCollectedCookies;
+				ciCollectedCookies = [];
+				items.forEach(function (item) {
+					d.cookie = item;
+				})
+			}
+		})(document);
+			</script>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<title>krkoo3</title>
+	<base href="https://krkoo3.kesug.com/">
+	<link rel="canonical" href="https://krkoo3.kesug.com/">	
+	
+						<meta name="viewport" content="width=device-width, initial-scale=1">
+					<meta name="description" content="krkoo3">
+			<meta name="keywords" content="krkoo3">
+			
+	<!-- Facebook Open Graph -->
+		<meta property="og:title" content="krkoo3">
+			<meta property="og:description" content="krkoo3">
+			<meta property="og:image" content="">
+			<meta property="og:type" content="article">
+			<meta property="og:url" content="https://krkoo3.kesug.com/?i=1">
+		<!-- Facebook Open Graph end -->
+
+		<meta name="generator" content="Site.pro Website builder">
+			<script src="js/common-bundle.js?ts=20250330143200" type="text/javascript"></script>
+	<script src="js/a195e4437cf400ab0ef709457bd74cd1-bundle.js?ts=20250330143200" type="text/javascript"></script>
+	<link href="css/common-bundle.css?ts=20250330143200" rel="stylesheet" type="text/css">
+	<link href="https://fonts.googleapis.com/css?family=Bitter:700,700i,400,400i&amp;subset=latin-ext,latin" rel="stylesheet" type="text/css">
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:700,700i,400,400i&amp;subset=cyrillic,cyrillic-ext,latin-ext,vietnamese,latin" rel="stylesheet" type="text/css">
+	<link href="css/a195e4437cf400ab0ef709457bd74cd1-bundle.css?ts=20250330143200" rel="stylesheet" type="text/css" id="wb-page-stylesheet">
+	
+	<script type="text/javascript">
+	window.useTrailingSlashes = false;
+	window.disableRightClick = false;
+	window.currLang = 'en';
+</script>
+		
+	<!--[if lt IE 9]>
+	<script src="js/html5shiv.min.js"></script>
+	<![endif]-->
+
+		<script type="text/javascript">
+		$(function() {
+			if (window.gtag) {
+				window.gtag('consent', 'default', {
+					'ad_storage': document.cookieIsAllowed('gtag:ad_storage') ? 'granted' : 'denied',
+					'ad_user_data': document.cookieIsAllowed('gtag:ad_user_data') ? 'granted' : 'denied',
+					'ad_personalization': document.cookieIsAllowed('gtag:ad_personalization') ? 'granted' : 'denied',
+					'analytics_storage': document.cookieIsAllowed('gtag:analytics_storage') ? 'granted' : 'denied',
+					'wait_for_update': 500
+				});
+			}
+
+			
+			if (!document.cookie.match(/(?:^|;\ *)__cookie_law__=/)) {
+				var block = $('<div>')
+					.addClass('wb_cookie_policy')
+					.css({
+						backgroundColor: "rgba(0, 0, 0, 0.66)",
+						minHeight: "%"					});
+				let policyMessage = $('<div class="policy-message">')
+						.html("We use cookies (and gather certain personal information) to provide you with a better online experience. By visiting our website you accept our terms.")
+						.css({
+							color: "#FFFFFF",
+							fontFamily: "Arial,Helvetica,sans-serif",
+							fontSize: 16						});
+				var btnWrapper = $('<div class="policy-button">');
+
+									policyMessage.appendTo(block);
+					btnWrapper.appendTo(block);
+				
+				var cookiePolicyButtonText = "Got it";
+				var cookiePolicyRejectButtonText = "Reject";
+				var cookiePolicyCustomizeButtonText = "Customize";
+				var cookiePolicyList = [];
+				if (window.gtag) {
+					cookiePolicyList = cookiePolicyList.concat([{"displayName":"Google Ad Storage","name":"gtag:ad_storage","description":"Enables storage, such as cookies (web) or device identifiers (apps), related to advertising.","necessary":false},{"displayName":"Google User Data","name":"gtag:ad_user_data","description":"Sets consent for sending user data to Google for online advertising purposes.","necessary":false},{"displayName":"Google Personalization","name":"gtag:ad_personalization","description":"Sets consent for personalized advertising.","necessary":false},{"displayName":"Google Analytics Storage","name":"gtag:analytics_storage","description":"Enables storage, such as cookies (web) or device identifiers (apps), related to analytics, for example, visit duration.","necessary":false}]);
+				}
+				if (cookiePolicyList && cookiePolicyList.length) {
+					var modalHeader = $('<div>').addClass('modal-header')
+						.append(
+							$('<button>').addClass('close').attr('data-dismiss', 'modal').append(
+								$('<span aria-hidden="true">&times;</span>')
+							)
+						).append(
+							$('<h4>').text(cookiePolicyCustomizeButtonText)
+						);
+					var modalContent = $('<div>').addClass('modal-body').css({maxHeight: '80vh', overflow: 'auto'});
+
+					cookiePolicyList.map(function (cookie) {
+							modalContent.append(
+								$('<div>')
+									.attr('data-cookies', cookie.name)
+									.addClass('checkbox material-switch')
+									.append(
+										$('<input>')
+											.attr('id', 'cookie' + cookie.name)
+											.attr('type', 'checkbox')
+											.attr('value', 1)
+											.attr('checked', true)
+											.attr('name', cookie.name)
+											.attr('disabled', cookie.necessary ? true : null)
+									)
+									.append($('<label>')
+										.attr('for', 'cookie' + cookie.name)
+									)
+									.append(
+										$('<div>')
+											.addClass('text-left material-switch-label')
+											.append(
+												$('<div>')
+													.css({display: 'inline-block', textAlign: 'left'})
+													.append(cookie.name ?
+														$('<b>')
+															.text(cookie.displayName ? cookie.displayName : cookie.name)
+															.append(cookie.necessary ? '<i class="fa fa-asterisk" style="color: red;margin-left: 0.5em;font-size: 0.7em;vertical-align: super;" aria-hidden="true"></i>' : '')
+														: ''
+													)
+													.append(cookie.description ? $('<p>').addClass('small').html(cookie.description) : '')
+											)
+									)
+							);
+					});
+					var modalFooter = $('<div>').addClass('modal-footer').append(
+						$('<button type="submit" class="btn btn-primary"></button>')
+							.text(cookiePolicyButtonText)
+					);
+					var modal = $('<div>').addClass('modal cookie-policy-modal fade').attr('role', 'dialog').append(
+						$('<div>').addClass('modal-dialog modal-md').attr('role', 'document').append(
+							$('<form id="customCookiesForm">').addClass('modal-content form-horizontal')
+								.append(modalHeader)
+								.append(modalContent)
+								.append(modalFooter)
+								.submit(function (e) {
+									e.preventDefault();
+
+									var names = cookiePolicyList.filter(cookie => cookie.necessary).map(function (field) {
+										return field.name.split(',').map(function (item) { return item.trim(); });
+									}).flat();
+
+									var selectedNames = $(e.target).serializeArray().map(function (field) {
+										if (typeof field.name === 'string') {
+											return field.name.split(',').map(function (item) { return item.trim(); });
+										}
+										return field.name;
+									}).flat();
+
+									if (document.cookieChangedCategories) {
+										document.cookieChangedCategories(1, names.concat(selectedNames));
+									}
+
+									modal.modal('hide');
+									modal.on('hidden.bs.modal', function () {
+										block.remove();
+									});
+
+									document.location.reload();
+									return false;
+								})
+						)
+					).appendTo('body');
+				}
+
+				if (cookiePolicyRejectButtonText) {
+				$('<button>')
+						.attr({type: 'button'})
+						.css({
+							backgroundColor: "#cccccc",
+							color: "#FFFFFF",
+							fontFamily: "Arial,Helvetica,sans-serif",
+							fontSize: 16,
+							marginRight: '5px',
+							marginLeft: '5px'
+						})
+						.text(cookiePolicyRejectButtonText)
+						.on('click', function() {
+							if (cookiePolicyList && cookiePolicyList.length && cookiePolicyCustomizeButtonText) {
+								var names = cookiePolicyList.filter(cookie => cookie.necessary).map(function (field) {
+									return field.name.split(',').map(function (item) { return item.trim(); });
+								}).flat();
+								// Save only required cookies
+								if (document.cookieChangedCategories) document.cookieChangedCategories(1, names);
+							} else {
+								// Save no cookies
+								if (document.cookieChangedCategories) document.cookieChangedCategories(0);
+							}
+
+							block.remove();
+							document.location.reload();
+						})
+						.appendTo(btnWrapper);
+				}
+
+				if (cookiePolicyList && cookiePolicyList.length && cookiePolicyCustomizeButtonText) {
+					$('<button>')
+						.attr({type: 'button'})
+						.css({
+							backgroundColor: "#5CB85C",
+							color: "#FFFFFF",
+							fontFamily: "Arial,Helvetica,sans-serif",
+							fontSize: 16,
+							marginRight: '5px',
+							marginLeft: '5px'
+						})
+						.text(cookiePolicyCustomizeButtonText)
+						.on('click', function () {
+							modal.modal('toggle');
+						})
+						.appendTo(btnWrapper);
+				}
+
+				if (cookiePolicyButtonText) {
+					$('<button>')
+						.attr({type: 'button'})
+						.css({
+							backgroundColor: "#5CB85C",
+							color: "#FFFFFF",
+							fontFamily: "Arial,Helvetica,sans-serif",
+							fontSize: 16,
+							marginRight: '5px',
+							marginLeft: '5px'
+						})
+						.text(cookiePolicyButtonText)
+						.on('click', function () {
+							if ($('#customCookiesForm').length) {
+								$('#customCookiesForm').submit();
+								return;
+							}
+
+							if (document.cookieChangedCategories) {
+								document.cookieChangedCategories(1);
+							}
+
+							block.remove();
+							document.location.reload();
+						})
+						.appendTo(btnWrapper);
+				}
+
+				$(document.body).append(block);
+
+                if (block.height() >= $(window).height() * 0.4) {
+                    block.addClass('center');
+                }
+			}
+		});
+	</script>
+		<script type="text/javascript">
+		$(function () {
+});    </script>
+</head>
+
+
+<body class="site site-lang-en "><style type="text/css">
+.d6e51ec98-close {
+	position: absolute;
+	display: block;
+	right: 30px;
+	font-size: 25px;
+	cursor: pointer;
+}
+.d6e51ec98-close::before {
+	content: '×';
+}
+.d6e51ec98-top {
+	z-index: 99999;
+	position: relative;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	background-color: #fff;
+	padding: 15px;
+	border: 2px solid #000;
+	font-size: 14px;
+	color: #333;
+}
+.d6e51ec98-top .d6e51ec98-close {
+	color: #333;
+}
+.d6e51ec98-top-logo {
+	text-decoration: none;
+	font-weight: normal;
+}
+.d6e51ec98-top-logo img {
+	height: 24px;
+	margin-top: -4px;
+}
+.d6e51ec98-top-text {
+	margin: 5px 35px;
+	text-align: center;
+}
+.d6e51ec98-bottom {
+	z-index: 99999;
+	position: relative;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: stretch;
+	text-align: center;
+	padding: 12px 15px;
+	font-size: 14px;
+	color: #F4F4F4;
+	background-color: #CFAFAF;
+}
+.d6e51ec98-bottom .d6e51ec98-close {
+	top: 14px;
+	color: #F4F4F4;
+}
+.d6e51ec98-bottom hr {
+	display: block;
+	font-size: 1px;
+	line-height: 1px;
+	overflow: hidden;
+	padding: 0;
+	margin: 16px 16px 12px;
+	border-top: 1px solid #F4F4F4;
+	border-bottom: none;
+	border-right: none;
+	border-left: none;
+	border-radius: 0;
+}
+.d6e51ec98-bottom-text-a,
+.d6e51ec98-bottom-text-b {
+	padding: 3px 0;
+	text-align: center;
+}
+.d6e51ec98-bottom-text-a {
+	padding-left: 36px;
+	padding-right: 36px;
+}
+.d6e51ec98-bottom-text-a hr {
+	margin-left: -20px;
+	margin-right: -20px;
+}
+
+.d6e51ec98-bottom-text-a a,
+.d6e51ec98-bottom-text-a a:hover,
+.d6e51ec98-bottom-text-a a:active,
+.d6e51ec98-bottom-text-a a:visited,
+.d6e51ec98-bottom-text-b a,
+.d6e51ec98-bottom-text-b a:hover,
+.d6e51ec98-bottom-text-b a:active,
+.d6e51ec98-bottom-text-b a:visited {
+	text-decoration: underline;
+	color: #F4F4F4;
+}
+</style>
+<script type="text/javascript">
+	window.addEventListener("DOMContentLoaded", function() {
+		var elem = $(".d6e51ec98-bottom");
+		if (elem.length > 0) {
+			var topElem = $(".d6e51ec98-top").parent();
+			if (topElem.length) {
+				topElem.append(elem);
+				elem[0].style.display = '';
+			}
+			else if (document.body) {
+				document.body.appendChild(elem[0]);
+				elem[0].style.display = '';
+			}
+		}
+	});
+</script>
+<div class="d6e51ec98-top">
+	<a class="d6e51ec98-top-logo" href="https://site.pro/?utm_source=b2c&amp;utm_medium=free&amp;utm_campaign=logo" target="_blank" title="Professional Website Builder" data-popup-processed="true">
+		<img src="https://site.pro/assets/img/sitepro-logo-black.svg" alt="Site.pro">
+	</a>
+	<div class="d6e51ec98-top-text">Website Created With Site.pro Website Builder</div>
+	<a class="btn btn-success" href="https://site.pro/?utm_source=b2c&amp;utm_medium=free&amp;utm_campaign=create" target="_blank" title="Create New Website" data-popup-processed="true">Create New Website</a>	<a class="d6e51ec98-close" href="https://site.pro/FAQ/Website-Builder-Website-creation/How-to-remove-ads-if-youre-using-3rd-party-hosting-provider/" target="_blank" title="If you are an owner of this website – please upgrade to remove ads" data-popup-processed="true"></a>
+</div>
+
+<div id="wb_root" class="root wb-layout-vertical"><div class="wb_sbg"></div><div id="wb_header_a195e4437cf400ab0ef709457bd74cd1" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-vertical"></div></div><div id="wb_main_a195e4437cf400ab0ef709457bd74cd1" class="wb_element wb-layout-element" data-plugin="LayoutElement" style="min-height: 698px;"><div class="wb_content wb-layout-vertical"><div id="a195e44374e4059f15dc48cbf5057087" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-vertical"><div id="a195e44374e406067e385d386c7e5743" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-vertical"><div id="a195e44374e4073f662ce8b458aa570c" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-absolute"><div id="a195e44374e4084d21d17bd4dc869aed" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-vertical"><div id="a195e44374e40b2445f610c2c6a028bd" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-vertical"><div id="a195e44374e40cf9fcbbe65fe6febce7" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-vertical"><div id="a195e44374e40d2e7785f0987ae69072" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-horizontal"><div id="a195e44374e40efce2e7f012a069e60a" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-vertical"><div id="a195e444982900dd25bcd86c3f5b62d4" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-horizontal"><div id="a195e44374e4100c43c5f432261ff190" class="wb_element wb_element_picture" data-plugin="Picture" title=""><div class="wb_picture_wrap"><div class="wb-picture-wrapper"><img loading="lazy" alt="" src="gallery/230531209c7b1a67a06b93dcbed82665.jpg?ts=1743334320"></div></div></div><div id="a195e44374e4148cabd501dc7da928aa" class="wb_element wb_text_element" data-plugin="TextArea" style=" line-height: normal;"><h1 class="wb-stl-custom1" data-dnid="10338"><span data-dnid="10351" style="color: #FF0000">KRK</span><span data-dnid="10352" style="color: #4A86E8">OO3</span></h1></div></div></div></div></div></div></div><div id="a195e44374e41183342d07b214777d2b" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-horizontal"><div id="a195e44374e4123e09b2db65eb531668" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-vertical"><div id="a195e44374e4135e2bb4bfbd80f2fa14" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-vertical"></div></div></div></div></div></div></div></div></div></div><div id="a195e44374e409cc99d76971f617c3fd" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-horizontal"><div id="a195e44374e40a14c548d8d15cf39f9d" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-vertical"></div></div></div></div></div></div><div id="a195e44374e415bdade987b638af3488" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-horizontal"><div id="a195e44374e4162280c0ba6143bd4f29" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-horizontal"><div id="a195e44374e417cb9d89355750d882d6" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-horizontal"><div id="a195e44374e41891afe693a190496011" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-horizontal"><div id="a195e44374e419c4870a49ddf597c276" class="wb_element wb_element_picture" data-plugin="Picture" title=""><div class="wb_picture_wrap"><div class="wb-picture-wrapper"><img loading="lazy" alt="" src="gallery/data-2a6a017bbf2aebe006c94ec0a01189f9.svg?ts=1743334320"></div></div></div></div></div></div></div></div></div></div></div></div></div><div id="a195e44374e41a33bc3159d5c785cbf7" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-horizontal"><div id="a195e44374e41b54b6898c1595607033" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-vertical"><div id="a195e44374e41cc5bb48734fb5b82085" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-horizontal"><div id="a195e44374e41df25baa24bacf8a2f4a" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-vertical"><div id="a195e44374e41e65b22e4f98af605c21" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-vertical"><div id="a195e44374e41f087e4e9a5a5f0d4f26" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-horizontal"><div id="a195e44374e420a27dd1a286cb556b21" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-vertical"><div id="a195e44374e4214a162cb8204a3ceef6" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-vertical"><div id="a195e44374e42258aa2f89b2bf410c9b" class="wb_element wb_text_element" data-plugin="TextArea" style=" line-height: normal;"><p class="wb-stl-custom2" data-dnid="10339"><span data-dnid="10353" style="color: #FF0000">Krkoo3</span><span data-dnid="10354" style="color: #0000FF"> </span><span data-dnid="10355" style="color: #4A86E8">is a platform for developing Android applications, or simple and complex applications whose sole goal is to make life easier.</span></p><p class="wb-stl-custom3" data-dnid="10340"><span data-dnid="10356" style="color: #4A86E8">You can download my apps by</span><span data-dnid="10357" style="color: #0000FF"> </span><a href="https://en.uptodown.com/developer/tt2jjj02" data-popup-processed="true">Uptodown.com</a><span data-dnid="10359" style="color: #0000FF"> </span><span data-dnid="10360" style="color: #4A86E8">you will find all my </span><span data-dnid="10361" style="color: #4A86E8">app</span><span data-dnid="10362" style="color: #4A86E8">s.</span></p><p class="wb-stl-custom4" data-dnid="10341"><span data-dnid="10363" style="color: #4A86E8">My applications it is completely free and without annoying ads, You won't find this in any app. The programs are characterized by a beautiful and easy interface free of any complications. Do not worry about the storage space on your device, as the applications will be light in size and free of any errors.</span><span data-dnid="10364" style="color: #0000FF"> </span><span data-dnid="10365" style="color: #FF0000">krkoo3</span><span data-dnid="10366" style="color: #0000FF"> </span><span data-dnid="10367" style="color: #4A86E8">is keen to develop highly efficient applications and choose distinctive and appropriate colors.</span><span data-dnid="10368" style="color: #0000FF"> </span><span data-dnid="10369" style="color: #FF0000">krkoo3</span><span data-dnid="10370" style="color: #0000FF"> </span><span data-dnid="10371" style="color: #4A86E8">applications are available for the Android operating system only. The apps is developed through Jetpack Compose on the Android Studio platform in the Kotlin language.</span><span data-dnid="10372" style="color: #0000FF"> </span><span data-dnid="10373" style="color: #FF0000">Krkoo3</span><span data-dnid="10374" style="color: #0000FF"> </span><span data-dnid="10375" style="color: #4A86E8">here to help you,</span><span data-dnid="10376" style="color: #0000FF"> </span><span data-dnid="10377" style="color: #FF0000">krkoo3</span><span data-dnid="10378" style="color: #0000FF"> </span><span data-dnid="10379" style="color: #4A86E8">by:</span></p><p class="wb-stl-custom4" data-dnid="10342"><span data-dnid="10380" style="color: #4A86E8">&nbsp;</span><span data-dnid="10381" style="color: #000000"><em><u>Dev.Ali Ibrahim Muhjr</u></em></span><span data-dnid="10382" style="color: #4A86E8">, he make this apps.</span></p><p class="wb-stl-custom5" data-dnid="10343">&lt;YOU WILL BE HAPPY, I AM SURE&gt;</p></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div><div id="a195e44374e423f2d8cf3edfa62abdd7" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-horizontal"><div id="a195e44374e424229d60362397875c48" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-vertical"><div id="a195e44374e4259c5ba1d4e7eec303b3" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-horizontal"><div id="a195e44374e42607faeaae22ec4dd288" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-vertical"><div id="a195e44374e42782e44772729bc2ffa1" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-vertical"><div id="a195e44374e428b112502175949e381b" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-horizontal"><div id="a195e44374e429d0a03c3d9e9d33d29d" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-vertical"><div id="a195e44374e42a70cd625b3d14a500b5" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-vertical"><div id="a195e44374e42bc889ddc0f630f6f450" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-horizontal"><div id="a195e44374e42c5fde36fc5b664e8e17" class="wb_element wb-layout-element wb-layout-has-link" data-plugin="LayoutElement"><a class="wb-layout-link" href="applications" data-popup-processed="true"></a><div class="wb_content wb-layout-vertical"><div id="a195e44374e42d25c1f6e5b2940219e1" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-vertical"><div id="a195e44374e42e35fb04878b0cc33a9a" class="wb_element wb_text_element" data-plugin="TextArea" style=" line-height: normal;"><p class="wb-stl-custom6" data-dnid="10429">Applications</p></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div><div id="a195e44374e42f99e81502ef1b5e1198" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-vertical"><div id="a195e44374e4300d9bc5ab120ec0529d" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-horizontal"><div id="a195e44374e4313099a4572997bac4d2" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-vertical"><div id="a195e44374e432009e935b3acb698a55" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-horizontal"><div id="a195e44374e433441a7e5070c9ff5711" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-vertical"><div id="a195e44374e43472c25fa9963ff00c79" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-vertical"><div id="a195e44374e4353b060118b646fec662" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-horizontal"><div id="a195e44374e43689c90434a5b64d4efa" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-vertical"><div id="a195e44374e43786e3e9f98699801eb8" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-vertical"><div id="a195e44374e438886857622faae904f9" class="wb_element wb_text_element" data-plugin="TextArea" style=" line-height: normal;"><p class="wb-stl-custom7" data-dnid="10345">contact: <a href="mailto:krkoo3a@gmail.com" data-popup-processed="true">krkoo3a@gmail.com</a></p></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div><div id="wb_footer_a195e4437cf400ab0ef709457bd74cd1" class="wb_element wb-layout-element" data-plugin="LayoutElement"><div class="wb_content wb-layout-vertical"></div></div></div>
+
+<div class="d6e51ec98-bottom" style="">
+	<div class="d6e51ec98-bottom-text-a"><b>Website Created With Site.pro Website Builder</b><br><a href="https://site.pro/FAQ/Website-Builder-Website-creation/How-to-remove-ads-if-youre-using-3rd-party-hosting-provider/" target="_blank" title="How to remove Ads?" data-popup-processed="true">How to remove Ads?</a><hr></div>
+	<div class="d6e51ec98-bottom-text-b"><a href="https://site.pro/Website-Builder/?utm_source=b2c&amp;utm_medium=free&amp;utm_campaign=builder" target="_blank" title="Professional Website Builder" data-popup-processed="true">Professional Website Builder</a>. <a href="https://site.pro/White-Label/?utm_source=b2c&amp;utm_medium=free&amp;utm_campaign=white" target="_blank" title="White Label Website Builder" data-popup-processed="true">White Label Website Builder</a>. <a href="https://site.pro/Domains/?utm_source=b2c&amp;utm_medium=free&amp;utm_campaign=domains" target="_blank" title="Buy New Domain Name" data-popup-processed="true">Buy New Domain Name</a></div>
+	<a class="d6e51ec98-close" href="https://site.pro/FAQ/Website-Builder-Website-creation/How-to-remove-ads-if-youre-using-3rd-party-hosting-provider/" target="_blank" title="If you are an owner of this website – please upgrade to remove ads" data-popup-processed="true"></a>
+</div><div class="wb_cookie_policy" style="background-color: rgba(0, 0, 0, 0.66);"><div class="policy-message" style="color: rgb(255, 255, 255); font-family: Arial<!DOCTYPE html>
+
 <html>
 
 <head>
@@ -137,4 +605,4 @@ Krkoo3 is a platform for developing Android applications, simple games or simple
 
 </body>
 
-</html>
+</html>, Helvetica, sans-serif; font-size: 16px;">We use cookies (and gather certain personal information) to provide you with a better online experience. By visiting our website you accept our terms.</div><div class="policy-button"><button type="button" style="background-color: rgb(204, 204, 204); color: rgb(255, 255, 255); font-family: Arial, Helvetica, sans-serif; font-size: 16px; margin-right: 5px; margin-left: 5px;">Reject</button><button type="button" style="background-color: rgb(92, 184, 92); color: rgb(255, 255, 255); font-family: Arial, Helvetica, sans-serif; font-size: 16px; margin-right: 5px; margin-left: 5px;">Got it</button></div></div></body></html>
